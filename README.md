@@ -28,7 +28,6 @@ Custom Template How To - G
 <?php echo date('Y'); ?>
 ```
 
-
 7. #### Also set the information about Glacial to:
 ```php
 All Rights Reserved.
@@ -39,7 +38,10 @@ All Rights Reserved.
   Glacial Multimedia
 </a> &copy;
 ```
-8. #### In the header.php file, be sure and add the following code into the body tag: ```php <?php body_class( $class ); ?>```
+8. #### In the header.php file, be sure and add the following code into the body tag:
+```php
+<?php body_class( $class ); ?>
+```
 
 9. 
 
