@@ -10,11 +10,10 @@ Custom Template How To - G
 - In `Permalink` Section, choose __Custom Structure__ , and make it the following > ```/%category%/%postname%/```
 
 2. Add the following plugins:
-```
 - All In One WP Security
 - Eggplant 301 Redirects
 - Nested Pages
 - Yoast SEO
 - WP Accessibility
 - Autoptimize
-```
+
