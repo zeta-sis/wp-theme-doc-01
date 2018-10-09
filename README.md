@@ -77,7 +77,7 @@ All Rights Reserved.
 ```
 
 
-12. #### Now we are going to want to replace the related page elements (from the mockup) with the following. For the title, replace it with:
+13. #### Now we are going to want to replace the related page elements (from the mockup) with the following. For the title, replace it with:
 ```php  
 <a href="<?php echo get_permalink( $post->post_parent ); ?>" title="<?php
 $parent_title = get_the_title($post->post_parent);
@@ -90,7 +90,7 @@ echo $parent_title; ?>
 
 
 
-12. #### Next, replace the actual related pages with:
+14. #### Next, replace the actual related pages with:
 ```php
 <ul>
   <?php
@@ -119,7 +119,7 @@ function mytheme_list_pages($param) {
 }
 ```
 
-12. #### Now let’s create the function file. Create a new file called functions.php. Now place an open and close php tag. 
+15. #### Now let’s create the function file. Create a new file called functions.php. Now place an open and close php tag. 
 ```php
 <?php ?>
 ```
@@ -138,7 +138,7 @@ function remove_width_attribute( $html ) {
 ```
 `This adds support for title tags, activates thumbnail images for blogs, sets the thumbnail dimensions and removes the height and width attribute when images are added through the cms.`
 
-12. #### Now lets create the primary navigation. Add the following to the functions file:
+16. #### Now lets create the primary navigation. Add the following to the functions file:
 ```php
 function register_my_menus() {
   register_nav_menus(
@@ -160,14 +160,14 @@ add_action( 'init', 'register_my_menus' );
 
 
 
-12. #### Next, add the following code to the header.php file where you would like the menu to be placed and replace what’s there already for a menu, with:
+17. #### Next, add the following code to the header.php file where you would like the menu to be placed and replace what’s there already for a menu, with:
 ```php
 <?php wp_nav_menu( array( 'theme_location' => 'primary-nav' ) ); ?>
 ```
 
 
 
-12. #### Then add the following CSS to the style.css file:
+18. #### Then add the following CSS to the style.css file:
 
 ```css
 /* Dropdown Menus */
@@ -227,7 +227,7 @@ add_action( 'init', 'register_my_menus' );
 #navigation ul li:hover ul { display:none; }
 ```
 
-12. #### Now style the menu based on the mockup. Next, let’s setup the interactive mobile menu. Add the following into the main js file:
+19. #### Now style the menu based on the mockup. Next, let’s setup the interactive mobile menu. Add the following into the main js file:
 ```javascript
 var menuContainer = '#navigation ';
 // var thisLink;
@@ -300,7 +300,7 @@ $( document ).ready(function() {
 
 
 
-12. #### Now add the following into your 990 media query in your style.css file.
+20. #### Now add the following into your 990 media query in your style.css file.
 
 ```css
 .menu-main-navigation-container>ul
@@ -379,16 +379,16 @@ li.open .holder { transform: rotate(0); }
 `Change the css to match the mockup.`
 
 
-12. #### You’ll now want to link up the site. To do this, use the following code:
+21. #### You’ll now want to link up the site. To do this, use the following code:
 ```php
 <?php echo get_page_link(18); ?>
 ```
 `Replace the number with the page id. This id can be found by either highlighting over the page name in the cms and looking at the link preview on the bottom of the screen, when you go into a page look at the url for it, or by inspecting the page in dev tools and check the body class.`
 
-12. #### Next, let’s create the blog page. You’ll want to start by going into the CMS, and go to “__Settings__” then “__Reading__”. Here, select where it says, “__Your homepage displays__”, for the “Posts page” select from the drop down the page you would like to become the blog.
+22. #### Next, let’s create the blog page. You’ll want to start by going into the CMS, and go to “__Settings__” then “__Reading__”. Here, select where it says, “__Your homepage displays__”, for the “Posts page” select from the drop down the page you would like to become the blog.
 
 
-12. #### Next, go into your page.php file, and copy everything. Create a file called home.php and paste the content in there.  You’ll want to replace the loop with the following:
+23. #### Next, go into your page.php file, and copy everything. Create a file called home.php and paste the content in there.  You’ll want to replace the loop with the following:
 
 ```php
 	   <article id="blog-page" class="entry" role="article">
@@ -419,6 +419,244 @@ li.open .holder { transform: rotate(0); }
 		   </article>
 ```
 
-`Be sure to change the comments section. Also change where the title is, to “__Blog__”.`
+`Be sure to change the comments section. Also change where the title is, to “Blog”.`
 
+
+24. #### Next, we are going to create archive.php. This will serve as the hub for all older blog posts. Take the page.php file again, and this time, replace the loop with:
+
+```php
+<article id="blog-page" class="entry" role="article">
+	<?php if (have_posts()) : ?>
+		<?php while (have_posts()) : the_post(); ?>
+			<div class="post" id="post-<?php the_ID(); ?>">
+				<h2>
+					<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title(); ?>">
+						<?php the_title(); ?>
+					</a>
+				</h2>
+				<div class="featured-img-post"><?php the_post_thumbnail(); ?></div>
+				<div class="entry">
+					<?php the_excerpt('Read the rest of this entry »'); ?>
+				</div>
+				<p class="postmetadata">Posted in <?php the_category(', ') ?> | <?php the_time('F j, Y'); ?></p>
+				<hr />
+			</div>
+		<?php endwhile; ?>
+			<div class="navigation">
+				<div class="alignleft"><?php next_posts_link('« Previous Entries') ?></div>
+ 				<div class="alignright"><?php previous_posts_link('Next Entries »') ?></div>
+			</div>
+		<?php else : ?>
+			<h2 class="center">Not Found</h2>
+			<p class="center">Sorry, but you are looking for something that isn't here.</p>
+			<?php /*include (TEMPLATEPATH . "/searchform.php");*/ ?>
+		<?php endif; ?>
+</article>
+```
+`Also replace the title with:`
+```php
+<?php 
+	if ( is_day() ) :
+		printf( __( 'Daily Archives: %s', 'blaine' ), get_the_date() );
+	elseif ( is_month() ) :
+		printf( __( 'Monthly Archives: %s', 'blaine' ), get_the_date( _x( 'F Y', 'monthly archives date format', 'blaine' ) ) );
+	elseif ( is_year() ) :
+		printf( __( 'Yearly Archives: %s', 'blaine' ), get_the_date( _x( 'Y', 'yearly archives date format', 'blaine' ) ) );
+	else :
+		_e( 'Archives', 'blaine' );
+	endif;
+?>
+```
+
+
+
+
+
+25. #### Next, take the archive.php file, copy it, and create a new file called category.php. Paste everything from archive.php into this one, and replace the title with:
+```php
+<?php single_cat_title('Category: '); ?>
+```
+
+
+
+
+
+26. #### Now, let’s create the widgetized area in the sidebar. This will allow us to place in a custom “Blog” sidebar. Let’s first register this area by adding the following into the functions.php file:
+```php 
+function arphabet_widgets_init() 
+{
+	register_sidebar( array(
+		'name'          => 'Home right sidebar',
+		'id'            => 'home_right_1',
+		'before_widget' => '<div>',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h2 class="rounded">',
+		'after_title'   => '</h2>',
+	) );
+}
+add_action( 'widgets_init', 'arphabet_widgets_init' );
+```
+
+
+
+
+27. #### Now, go into the CMS, then to Appearance – Widgets. In here, add Recent Posts (change the number of posts to show to 2), Categories, and Archives.
+
+
+
+
+
+
+
+
+28. #### Next, find where you would like to add this area, generally above the Related Pages area:
+```php 
+<?php if(is_single() || is_category() || is_archive() || is_home() || is_search()) : ?>
+	<?php if ( is_active_sidebar( 'home_right_1' ) ) : ?>
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<?php dynamic_sidebar( 'home_right_1' ); ?>	</div><!-- #primary-sidebar -->
+	<?php endif; ?>
+<?php endif; ?>
+```
+
+`This will make it so this will only appear on blog pages. Also, generally I will place this in it’s own div, and place the “related pages” area into a div, and make the related page area not appear on blog pages.
+You’ll need to style the generated content to match the mockup.`
+
+
+
+
+
+
+29. #### Now, let’s create Read More buttons for the blog pillar pages. Add the following to functions.php:
+```php 
+function new_excerpt_more($more) 
+	{
+		global $post;
+		return '... <a class="moretag ui-read-more" href="'. get_permalink($post->ID) . '" title="Click Here to Read More">Read More</a>';
+	}
+add_filter('excerpt_more', 'new_excerpt_more');
+```
+
+
+
+
+
+
+30. #### Next, add the following to style the buttons:
+```css
+.moretag
+	{
+		display:block !important; margin:15px 0; color:#fff; font-size:1em;
+		padding:0.6em; text-align:center; text-decoration:none; background:#c4e9fb !important; 
+		width:150px !important; transition:color 350ms ease 0s, background-color 350ms ease 0s;
+	} 
+.moretag:hover {background:#4f7aac !important; color:#fff;}
+```
+`Obviously, feel free to style how the client would like them.`
+
+
+
+
+
+
+
+
+
+
+31. #### Now, let’s create individual blog pages as well as the 404 page. Both of these pages are going to be exact copies of page.php, so just copy page.php and create a file called single.php, and 404.php. Place the content from page.php into both of these files.
+
+
+
+
+
+
+
+
+
+32. #### Let’s create the page that will display the search results. First, let’s register the search bar, add the following to the functions.php file:
+```php
+function wpdocs_after_setup_theme() {
+    add_theme_support( 'html5', array( 'search-form' ) );
+}
+add_action( 'after_setup_theme', 'wpdocs_after_setup_theme' );
+```
+
+
+
+
+
+
+
+33. #### Now, let’s set the search results. Place the following into the functions.php file:
+```php
+add_action('pre_get_posts', 'change_search_limit');
+	function change_search_limit($query){
+			$number_of_posts = 99;
+			if ( $query->is_main_query() && is_search() )
+					$query->set('posts_per_page', $number_of_posts);
+}
+```
+
+
+
+
+
+
+
+
+
+34. #### Now, place the following code where you would want to add the search bar (if it’s not in the mockup, generally I will place it into the footer):
+```php
+<form role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
+    <label>
+			<input type="search" class="search-field"
+            placeholder="<?php echo esc_attr_x( 'Search …', 'placeholder' ) ?>"
+            value="<?php echo get_search_query() ?>" name="s"
+            title="<?php echo esc_attr_x( 'Search for:', 'label' ) ?>" />
+		</label>
+	<input type="submit" class="search-submit" value="<?php echo esc_attr_x( 'Search', 'submit button' ) ?>" />
+</form>
+```
+
+
+
+
+35. #### Now, let’s create the search results page. Create a file called search.php. Again, copy the contents of page.php and replace the loop with the following:
+```php
+<!-- SEARCH PAGE -->
+<div id="search-results" class="wrapper entry" role="search">
+	<h2>
+		<?php echo $wp_query->found_posts; ?>
+		<?php _e( 'Search Results Found For', 'locale' ); ?>: "<?php the_search_query(); ?>"
+	</h2>
+
+	<!-- COUNT RESULTS -->
+	<?php if (have_posts()) : ?>
+	<?php while (have_posts()) : the_post(); ?>
+	<!-- / COUNT RESULTS -->
+	
+	<!-- LIST RESULTS -->
+	<section>   
+		<ul>
+			<li>
+				<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to 
+					<?php the_title_attribute(); ?>">
+					<?php the_title(); ?>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- / LIST RESULTS -->
+
+	<?php endwhile; else: ?>
+
+	<!-- 404 SEARCH -->
+	<div class="404-search">
+		<?php _e("Oops... We couldn't find what you were searching for. Please try again"); ?>
+	</div>
+	<!-- / 404 SEARCH -->
+
+	<?php endif; ?>
+</div>
+```
 
