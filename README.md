@@ -2,12 +2,18 @@
 Custom Template How To - G
 
 
+
+
+
 1. #### When you have WordPress installed, go into
 - In `Settings > General`, and remove the __WordPress tag line__.
 - In `Reading`, make sure the __Discourage search engines from indexing this site__ is checked.
 - In `Discussion`, uncheck the __first three check__ boxes, and disable the __Avatar Display checkbox__. 
 - In `Media`, uncheck the __Organize my uploads into month..__ checkbox. 
 - In `Permalink` Section, choose __Custom Structure__ , and make it the following > ```/%category%/%postname%/```
+
+
+
 
 
 2. #### Add the following plugins:
@@ -19,13 +25,25 @@ Custom Template How To - G
 - Autoptimize
 
 
+
+
+
 3. #### Start with homepage, make `index.html` into `index.php`. Take the __comments__ from the twenty seventeen theme’s front-page.php file and change the __verbiage__.
+
+
+
 
 
 4. #### Make sure header/footer match on the secondary and home page. Note any differences. 
 
 
+
+
+
 5. #### Create a header.php file and footer.php file (don’t forget the hooks!) based on this Take the comments from the twenty seventeen files. 
+
+
+
 
 
 6. #### In the footer file, please replace the date with:
@@ -33,6 +51,9 @@ Custom Template How To - G
 <?php echo date('Y'); ?>
 ```
 `This will dynamically change the date.`
+
+
+
 
 
 7. #### Also set the information about Glacial to:
@@ -46,6 +67,10 @@ All Rights Reserved.
 </a> &copy;
 ```
 
+
+
+
+
 8. #### In the header.php file, be sure and add the following code into the body tag:
 ```php
 <?php body_class( $class ); ?>
@@ -58,10 +83,19 @@ All Rights Reserved.
 ```
 
 
+
+
+
 9. #### Add the calls for the header and footer onto the index file. Once this is set, go into the CMS, then `Settings – Reading`. Where it says, "__Your homepage displays__", change to “__A static page__” to the page you wish to be your homepage (create a page called Home).
 
 
+
+
+
 10. #### Next, copy all the content in index.php and paste it into a new file called, `front-page.php`. Next, grab the contents in the twenty seventeen theme from index.php and paste it directly into the `index.php file in our theme`. This file will just be a placeholder for now. Be sure to change the verbiage in the comments.
+
+
+
 
 
 11. #### Next, create a file called page.php. Open up the secondary page provided from webflow and take out the header and footer. Copy what’s left and put it into page.php. Grab the comments from the twenty seventeen page.php file and put it onto yours. Next add the header/footer call. Also, wherever the title of the page is, replace it with the following code:
@@ -71,10 +105,16 @@ All Rights Reserved.
 `This will dynamically pull the title of whatever page you are on.`
 
 
+
+
+
 12. #### If the secondary pages have a sidebar, create a file called sidebar.php and place all the sidebar content into this file. Be sure and grab the comments from the sidebar.php file in the twenty seventeen theme. Use the following to call the sidebar:
 ```php
 <?php get_sidebar(); ?>
 ```
+
+
+
 
 
 13. #### Now we are going to want to replace the related page elements (from the mockup) with the following. For the title, replace it with:
@@ -87,6 +127,8 @@ echo $parent_title; ?>
 </a>
 ```
 `This will dynamically change the title to the parent page.`
+
+
 
 
 
@@ -119,6 +161,10 @@ function mytheme_list_pages($param) {
 }
 ```
 
+
+
+
+
 15. #### Now let’s create the function file. Create a new file called functions.php. Now place an open and close php tag. 
 ```php
 <?php ?>
@@ -137,6 +183,10 @@ function remove_width_attribute( $html ) {
 }
 ```
 `This adds support for title tags, activates thumbnail images for blogs, sets the thumbnail dimensions and removes the height and width attribute when images are added through the cms.`
+
+
+
+
 
 16. #### Now lets create the primary navigation. Add the following to the functions file:
 ```php
@@ -160,10 +210,14 @@ add_action( 'init', 'register_my_menus' );
 
 
 
+
+
 17. #### Next, add the following code to the header.php file where you would like the menu to be placed and replace what’s there already for a menu, with:
 ```php
 <?php wp_nav_menu( array( 'theme_location' => 'primary-nav' ) ); ?>
 ```
+
+
 
 
 
@@ -226,6 +280,10 @@ add_action( 'init', 'register_my_menus' );
 #navigation ul li { float:none; width:100%; display:block; text-align:center; }
 #navigation ul li:hover ul { display:none; }
 ```
+
+
+
+
 
 19. #### Now style the menu based on the mockup. Next, let’s setup the interactive mobile menu. Add the following into the main js file:
 ```javascript
@@ -297,6 +355,8 @@ $( document ).ready(function() {
 });
 } )( jQuery );
 ```
+
+
 
 
 
@@ -379,47 +439,63 @@ li.open .holder { transform: rotate(0); }
 `Change the css to match the mockup.`
 
 
+
+
+
 21. #### You’ll now want to link up the site. To do this, use the following code:
 ```php
 <?php echo get_page_link(18); ?>
 ```
 `Replace the number with the page id. This id can be found by either highlighting over the page name in the cms and looking at the link preview on the bottom of the screen, when you go into a page look at the url for it, or by inspecting the page in dev tools and check the body class.`
 
+
+
+
+
 22. #### Next, let’s create the blog page. You’ll want to start by going into the CMS, and go to “__Settings__” then “__Reading__”. Here, select where it says, “__Your homepage displays__”, for the “Posts page” select from the drop down the page you would like to become the blog.
+
+
+
 
 
 23. #### Next, go into your page.php file, and copy everything. Create a file called home.php and paste the content in there.  You’ll want to replace the loop with the following:
 
 ```php
-	   <article id="blog-page" class="entry" role="article">
-		   <?php if (have_posts()) : ?>
-            <?php while (have_posts()) : the_post(); ?>
-            <div class="post" id="post-<?php the_ID(); ?>">
-            
-                <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to
-                <?php the_title(); ?>"><?php the_title(); ?></a></h2>
-             <div class="featured-img-post"><?php the_post_thumbnail(); ?></div>
-                <div class="entry">
-                    <?php the_excerpt('Read the rest of this entry »'); ?>
-                </div>
-
-                <p class="postmetadata">Posted in <?php the_category(', ') ?> | <?php the_time('F j, Y'); ?></p>
+<article id="blog-page" class="entry" role="article">
+	<?php if (have_posts()) : ?>
+		<?php while (have_posts()) : the_post(); ?>
+			<div class="post" id="post-<?php the_ID(); ?>">
+				<h2>
+					<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title(); ?>">
+						<?php the_title(); ?>
+					</a>
+				</h2>
+				<div class="featured-img-post"><?php the_post_thumbnail(); ?></div>
+				<div class="entry">
+					<?php the_excerpt('Read the rest of this entry »'); ?>
+				</div>
+				<p class="postmetadata">
+					Posted in <?php the_category(', ') ?> | <?php the_time('F j, Y'); ?>
+				</p>
 				<hr />
-            </div>
-            <?php endwhile; ?>
-            <div class="navigation">
-                <div class="alignleft"><?php next_posts_link('« Previous Entries') ?></div>
-                <div class="alignright"><?php previous_posts_link('Next Entries »') ?></div>
-            </div>
-        <?php else : ?>
-            <h2 class="center">Not Found</h2>
-            <p class="center">Sorry, but you are looking for something that isn't here.</p>
-            <?php /*include (TEMPLATEPATH . "/searchform.php");*/ ?>
-        <?php endif; ?>
-		   </article>
+			</div>
+	<?php endwhile; ?>
+			<div class="navigation">
+				<div class="alignleft"><?php next_posts_link('« Previous Entries') ?></div>
+				<div class="alignright"><?php previous_posts_link('Next Entries »') ?></div>
+			</div>
+	<?php else : ?>
+			<h2 class="center">Not Found</h2>
+			<p class="center">Sorry, but you are looking for something that isn't here.</p>
+			<?php /*include (TEMPLATEPATH . "/searchform.php");*/ ?>
+	<?php endif; ?>
+</article>
 ```
 
 `Be sure to change the comments section. Also change where the title is, to “Blog”.`
+
+
+
 
 
 24. #### Next, we are going to create archive.php. This will serve as the hub for all older blog posts. Take the page.php file again, and this time, replace the loop with:
@@ -471,7 +547,6 @@ li.open .holder { transform: rotate(0); }
 
 
 
-
 25. #### Next, take the archive.php file, copy it, and create a new file called category.php. Paste everything from archive.php into this one, and replace the title with:
 ```php
 <?php single_cat_title('Category: '); ?>
@@ -500,10 +575,8 @@ add_action( 'widgets_init', 'arphabet_widgets_init' );
 
 
 
+
 27. #### Now, go into the CMS, then to Appearance – Widgets. In here, add Recent Posts (change the number of posts to show to 2), Categories, and Archives.
-
-
-
 
 
 
@@ -526,7 +599,6 @@ You’ll need to style the generated content to match the mockup.`
 
 
 
-
 29. #### Now, let’s create Read More buttons for the blog pillar pages. Add the following to functions.php:
 ```php 
 function new_excerpt_more($more) 
@@ -536,8 +608,6 @@ function new_excerpt_more($more)
 	}
 add_filter('excerpt_more', 'new_excerpt_more');
 ```
-
-
 
 
 
@@ -558,16 +628,7 @@ add_filter('excerpt_more', 'new_excerpt_more');
 
 
 
-
-
-
-
-
 31. #### Now, let’s create individual blog pages as well as the 404 page. Both of these pages are going to be exact copies of page.php, so just copy page.php and create a file called single.php, and 404.php. Place the content from page.php into both of these files.
-
-
-
-
 
 
 
