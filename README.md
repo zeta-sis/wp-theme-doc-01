@@ -23,13 +23,11 @@ Custom Template How To - G
 
 5. #### Create a header.php file and footer.php file (don’t forget the hooks!) based on this Take the comments from the twenty seventeen files. 
 
-6. #### In the footer file, please replace the date with 
-```php ``` 
-
+6. #### In the footer file, please replace the date with, `This will dynamically change the date.`
 ```php
 <?php echo date('Y'); ?>
 ```
-This will dynamically change the date. 
+
 
 7. #### Also set the information about Glacial to:
 ```php
