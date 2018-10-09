@@ -174,7 +174,7 @@ add_action( 'init', 'register_my_menus' );
 /* ===== Top ===== */
 #navigation .current-menu-item a { color:#007fba;}
 #navigation ul { list-style:none; margin:0; padding:0; display:flex; justify-content:center; }
-#navigation ul li{ display:inline-block; text-align:left; }
+#navigation ul li { display:inline-block; text-align:left; }
 
 /* ===== First Level ===== */				
 #navigation ul li { position:relative; padding:0; margin:0; }
@@ -188,7 +188,8 @@ add_action( 'init', 'register_my_menus' );
 		-moz-transition: all 400ms ease; -ms-transition: all 400ms ease;
 	}
 #navigation ul li:hover a { position:relative; background-color: #febd62;}
-#navigation ul ul,	#navigation ul li:hover ul ul { position:absolute; display:none; }
+#navigation ul ul, 
+#navigation ul li:hover ul ul { position:absolute; display:none; }
 #navigation ul ul li:hover ul,
 #navigation ul li:hover ul li:hover ul { display:block; top:0px; left: 100%;}
 	
@@ -221,17 +222,203 @@ add_action( 'init', 'register_my_menus' );
 ```
 `Also add the following into the __media query with a max width of 990px__:`
 ```css
-#navigation ul{ display:block; }
-#navigation ul li{ float:none; width:100%; display:block; text-align:center; }
-#navigation ul li:hover ul{ display:none; }
+#navigation ul { display:block; }
+#navigation ul li { float:none; width:100%; display:block; text-align:center; }
+#navigation ul li:hover ul { display:none; }
+```
+
+12. #### Now style the menu based on the mockup. Next, let’s setup the interactive mobile menu. Add the following into the main js file:
+```javascript
+var menuContainer = '#navigation ';
+// var thisLink;
+( function( $ ) {
+$( document ).ready(function() {
+	$(menuContainer + '>div>ul>li.menu-item-has-children').append('<span class="holder"></span>');
+	$(menuContainer + 'li.menu-item-has-children>span.holder').on('click', function(){
+			var element = $(this).parent('li');
+			if (element.hasClass('open')) {
+				element.removeClass('open');
+				element.find('li').removeClass('open');
+				element.find('ul').slideUp();
+				// $(this).attr('href', thisLink);
+			}
+			else {
+				// thisLink = this.getAttribute('href');
+				element.addClass('open');
+				element.children('ul').slideDown();
+				element.siblings('li').children('ul').slideUp();
+				element.siblings('li').removeClass('open');
+				element.siblings('li').find('li').removeClass('open');
+				element.siblings('li').find('ul').slideUp();
+				// $(this).removeAttr('href');
+			}
+		});
+	(function getColor() {
+		var r, g, b;
+		var textColor = $(menuContainer).css('color');
+		textColor = textColor.slice(4);
+		r = textColor.slice(0, textColor.indexOf(','));
+		textColor = textColor.slice(textColor.indexOf(' ') + 1);
+		g = textColor.slice(0, textColor.indexOf(','));
+		textColor = textColor.slice(textColor.indexOf(' ') + 1);
+		b = textColor.slice(0, textColor.indexOf(')'));
+		var l = rgbToHsl(r, g, b);
+		if (l > 0.7) {
+			$(menuContainer + '>ul>li>a').css('text-shadow', '0 1px 1px rgba(0, 0, 0, .35)');
+			$(menuContainer + '>ul>li>span').css('border-color', 'rgba(0, 0, 0, .35)');
+		}
+		else
+		{
+			$(menuContainer +  '>ul>li>a').css('text-shadow', '0 1px 0 rgba(255, 255, 255, .35)');
+			$(menuContainer +  '>ul>li>span').css('border-color', 'rgba(255, 255, 255, .35)');
+		}
+	})();
+
+	function rgbToHsl(r, g, b) {
+	    r /= 255, g /= 255, b /= 255;
+	    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+	    var h, s, l = (max + min) / 2;
+
+	    if(max == min){
+	        h = s = 0;
+	    }
+	    else {
+	        var d = max - min;
+	        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+	        switch(max){
+	            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+	            case g: h = (b - r) / d + 2; break;
+	            case b: h = (r - g) / d + 4; break;
+	        }
+	        h /= 6;
+	    }
+	    return l;
+	}
+});
+} )( jQuery );
 ```
 
 
 
+12. #### Now add the following into your 990 media query in your style.css file.
+
+```css
+.menu-main-navigation-container>ul
+	{
+		-webkit-box-orient: vertical;-webkit-box-direction: normal;
+		-ms-flex-direction: column;flex-direction: column;
+	}
+.menu-main-navigation-container { background-color: #393be5 }
+#navigation ul li a { padding:10px 30px 10px 0px; text-align: right; }
+#navigation ul li { width:100%; text-align: right; }
+#navigation ul li ul{ width: 100%; position: relative; padding-top: 0px; margin-top: 0px;}
+#navigation ul li:hover ul{ position: relative; display: none; }
+#navigation ul ul li a{ width: 100% !important; }
+#navigation ul li:hover a{ width: 100%;}
+.menu li.has-children > a:after{ display: none; }
+#navigation ul ul li:hover ul,
+#navigation ul li:hover ul li:hover ul{ display: none; }
+/* Drop Down Arrows  Mobile */
+		
+/* Drop Down Arrows */
+#navigation > ul > li > a:hover,
+#navigation > ul > li.active > a,
+#navigation > ul > li.open > a 
+	{
+		color: #eeeeee;
+		background: #1fa0e4;
+		background: -webkit-linear-gradient(#1fa0e4, #1992d1);
+		background: -moz-linear-gradient(#1fa0e4, #1992d1);
+		background: -o-linear-gradient(#1fa0e4, #1992d1);
+		background: -ms-linear-gradient(#1fa0e4, #1992d1);
+		background: linear-gradient(#1fa0e4, #1992d1);
+	}
+
+#navigation > ul > li.open > a 
+	{
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.15);
+		border-bottom: 1px solid #1682ba;
+	}
+li.open .holder { transform: rotate(0); }
+.holder 
+	{
+		top: 4px; right: 0px; z-index: 1000; width: 30px; height: 30px; display: block; 
+		display: flex; justify-content: center; align-items: center; position: absolute;
+		color: #ffffff; transform: rotate(180deg); transition: all 350ms ease;
+	}
+/*.holder:hover{ background: #1b1b1b80; }*/
+.holder::before 
+	{
+		display: inline-block; content: "";  width: 6px; height: 6px; right: 20px;
+		z-index: 10; -webkit-transform: rotate(-135deg);color: #ffffff;
+		-moz-transform: rotate(-135deg); -ms-transform: rotate(-135deg);
+		-o-transform: rotate(-135deg); transform: rotate(-135deg);
+	}
+.holder::after { top: 17px; border-top: 2px solid #fff; border-left: 2px solid #fff; }
+#navigation > ul > li > a:hover > span::after,
+#navigation > ul > li.active > a > span::after,
+#navigation > ul > li.open > a > span::after { border-color: #eeeeee; }
+.holder::before 
+	{
+		top: 18px;  border-top: 2px solid; border-left: 2px solid;
+		border-top-color: inherit; border-left-color: inherit;
+	}
+#navigation > ul > li > a:hover > span::after,
+#navigation > ul > li.active > a > span::after,
+#navigation > ul > li.open > a > span::after { border-color: #eeeeee; }
+#navigation ul ul li:hover > a,
+#navigation ul ul li.open > a,
+#navigation ul ul li.active > a { background: #424852; color: #ffffff; }
+#navigation > ul > li > ul > li.open:last-child > a,
+#navigation > ul > li > ul > li.last.open > a { border-bottom: 1px solid #32373e; }
+#navigation > ul > li > ul > li.open:last-child > ul > li:last-child > a { border-bottom: 0; }
+#navigation ul ul li.active > a::after,
+#navigation ul ul li.open > a::after,
+#navigation ul ul li > a:hover::after { border-color: #ffffff; }
+```
+`Change the css to match the mockup.`
 
 
+12. #### You’ll now want to link up the site. To do this, use the following code:
+```php
+<?php echo get_page_link(18); ?>
+```
+`Replace the number with the page id. This id can be found by either highlighting over the page name in the cms and looking at the link preview on the bottom of the screen, when you go into a page look at the url for it, or by inspecting the page in dev tools and check the body class.`
+
+12. #### Next, let’s create the blog page. You’ll want to start by going into the CMS, and go to “__Settings__” then “__Reading__”. Here, select where it says, “__Your homepage displays__”, for the “Posts page” select from the drop down the page you would like to become the blog.
 
 
+12. #### Next, go into your page.php file, and copy everything. Create a file called home.php and paste the content in there.  You’ll want to replace the loop with the following:
 
+```php
+	   <article id="blog-page" class="entry" role="article">
+		   <?php if (have_posts()) : ?>
+            <?php while (have_posts()) : the_post(); ?>
+            <div class="post" id="post-<?php the_ID(); ?>">
+            
+                <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to
+                <?php the_title(); ?>"><?php the_title(); ?></a></h2>
+             <div class="featured-img-post"><?php the_post_thumbnail(); ?></div>
+                <div class="entry">
+                    <?php the_excerpt('Read the rest of this entry »'); ?>
+                </div>
+
+                <p class="postmetadata">Posted in <?php the_category(', ') ?> | <?php the_time('F j, Y'); ?></p>
+				<hr />
+            </div>
+            <?php endwhile; ?>
+            <div class="navigation">
+                <div class="alignleft"><?php next_posts_link('« Previous Entries') ?></div>
+                <div class="alignright"><?php previous_posts_link('Next Entries »') ?></div>
+            </div>
+        <?php else : ?>
+            <h2 class="center">Not Found</h2>
+            <p class="center">Sorry, but you are looking for something that isn't here.</p>
+            <?php /*include (TEMPLATEPATH . "/searchform.php");*/ ?>
+        <?php endif; ?>
+		   </article>
+```
+
+`Be sure to change the comments section. Also change where the title is, to “__Blog__”.`
 
 
