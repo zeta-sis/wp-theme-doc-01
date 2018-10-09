@@ -622,14 +622,14 @@ o	Now, let’s create the search results page. Create a file called search.php. 
 	
 	<!-- LIST RESULTS -->
 	<section>   
-			<ul>
-					<li>
-						<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to 
-						<?php the_title_attribute(); ?>">
-							<?php the_title(); ?>
-						</a>
-					</li>
-			</ul>
+		<ul>
+			<li>
+				<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to 
+					<?php the_title_attribute(); ?>">
+					<?php the_title(); ?>
+				</a>
+			</li>
+		</ul>
 	</section>
 	<!-- / LIST RESULTS -->
 
