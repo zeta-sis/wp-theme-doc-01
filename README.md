@@ -7,7 +7,9 @@ Custom Template How To - G
  Next, in `Reading`, make sure the __Discourage search engines from indexing this site__ is checked. 
 `In Discussion`, uncheck the __first three check__ boxes, and disable the __Avatar Display checkbox__. 
  In `media`, uncheck the __Organize my uploads into month..__ checkbox. 
- In the `Permalink` Section, choose __Custom Structure__ , and make it the following
+ In the `Permalink` Section, choose __Custom Structure__ , and make it the following - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `#f03c15`
 ```
 /%category%/%postname%/
 ```
+
+
