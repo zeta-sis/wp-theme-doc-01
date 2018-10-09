@@ -23,7 +23,15 @@ Custom Template How To - G
 
 5. #### Create a header.php file and footer.php file (don’t forget the hooks!) based on this Take the comments from the twenty seventeen files. 
 
-6. #### In the footer file, please replace the date with ```php <?php echo date('Y'); ?>``` This will dynamically change the date. 
+6. #### In the footer file, please replace the date with 
+```php <?php echo date('Y'); ?>``` 
+
+```php
+<a href="https://www.glacial.com/our-services/medical-website-design/" target="_blank" title="Medical Website Design">
+  Medical website design
+</a>
+```
+This will dynamically change the date. 
 
 7. #### Also set the information about Glacial to:
 ```php
