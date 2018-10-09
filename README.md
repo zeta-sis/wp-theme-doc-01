@@ -154,12 +154,77 @@ add_action( 'init', 'register_my_menus' );
 `This will make “Menu” appear under “Appearance” in the CMS. It also creates 3 different menus, 
   - Primary Navigation 
   - Mobile Navigation
-  - Footer Menu. 
- While you may not need all of these, there are setup just in case. You can also create more than these. You now have access to create a navigation menu. You will want to add all of the pages into the CMS and create the menu under “__Apperance__” then “__Menu__”.`
+  - Footer Menu.`
+  
+`While you may not need all of these, there are setup just in case. You can also create more than these. You now have access to create a navigation menu. You will want to add all of the pages into the CMS and create the menu under “__Apperance__” then “__Menu__”.`
 
 
-12. #### 
 
+12. #### Next, add the following code to the header.php file where you would like the menu to be placed and replace what’s there already for a menu, with:
+```php
+<?php wp_nav_menu( array( 'theme_location' => 'primary-nav' ) ); ?>
+```
+
+
+
+12. #### Then add the following CSS to the style.css file:
+
+```css
+/* Dropdown Menus */
+/* ===== Top ===== */
+#navigation .current-menu-item a { color:#007fba;}
+#navigation ul { list-style:none; margin:0; padding:0; display:flex; justify-content:center; }
+#navigation ul li{ display:inline-block; text-align:left; }
+
+/* ===== First Level ===== */				
+#navigation ul li { position:relative; padding:0; margin:0; }
+#navigation ul ul li { border:none; }
+#navigation ul li a 
+	{
+		margin-bottom: 0; color: #1b1b1b; display: inline-block;
+		font-size: 16px; line-height: 20px; padding: 10px 20px;
+		font-weight:400; font-family:Lato, sans-serif; text-decoration: none;
+		transition: all 400ms ease; -webkit-transition: all 400ms ease;
+		-moz-transition: all 400ms ease; -ms-transition: all 400ms ease;
+	}
+#navigation ul li:hover a { position:relative; background-color: #febd62;}
+#navigation ul ul,	#navigation ul li:hover ul ul { position:absolute; display:none; }
+#navigation ul ul li:hover ul,
+#navigation ul li:hover ul li:hover ul { display:block; top:0px; left: 100%;}
+	
+/* ===== Second and Third Level ===== */
+#navigation ul li:hover ul 
+	{
+		display:block; position:absolute; left:0; top:100%;
+		width:auto; height:auto; margin:0; padding:0;
+	}
+
+#navigation ul ul ul
+	{
+		background:#e4e4e4 !important;
+		border-color:#e4e4e4 !important; margin-left:-14px;
+	}
+#navigation ul ul li a 
+	{
+		float:none; line-height:normal; font-variant:normal;
+		font-weight:normal; width:320px; font-size:16px;
+		color:#353535 !important; text-transform:none; padding:16px 10px;
+		background:#f4f9fd !important; border-bottom:1px solid #f9e6cb;
+	}
+#navigation ul ul li a { color:#fff; }
+#navigation ul ul li:hover a {
+    color:#fff !important;
+	background-color:#079dad !important;
+}
+#navigation ul ul li:hover ul li a { color:#353535 !important; background:#fff2e0 !important; }
+#navigation ul ul li:hover ul li:hover a { color:#fff; background:#079dad !important;}
+```
+`Also add the following into the __media query with a max width of 990px__:`
+```css
+#navigation ul{ display:block; }
+#navigation ul li{ float:none; width:100%; display:block; text-align:center; }
+#navigation ul li:hover ul{ display:none; }
+```
 
 
 
