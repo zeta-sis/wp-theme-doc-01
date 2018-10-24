@@ -21,7 +21,7 @@ Custom Template How To - G
 - Eggplant 301 Redirects
 - Nested Pages
 - Yoast SEO
-- WP Accessibility
+- WP Accessibility By Joe Dolson
 - Autoptimize
 
 
